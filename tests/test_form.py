@@ -49,3 +49,13 @@ def test_fill_and_submit_form(setup_browser):
 
     # Проверка успешной отправки формы
     browser.element('.modal-title').should(have.exact_text('Thanks for submitting the form'))
+    browser.all('.modal-body tr td')[1].should(have.exact_text('John Doe'))
+    browser.all('.modal-body tr td')[3].should(have.exact_text('johndoe@example.com'))
+    browser.all('.modal-body tr td')[5].should(have.exact_text('Male'))
+    browser.all('.modal-body tr td')[7].should(have.exact_text('1234567890'))
+    browser.all('.modal-body tr td')[9].should(have.exact_text('15 June,1990'))
+    browser.all('.modal-body tr td')[11].should(have.exact_text('Maths'))
+    browser.all('.modal-body tr td')[13].should(have.exact_text('Sports'))
+    browser.all('.modal-body tr td')[15].should(have.exact_text('Streets.png'))
+    browser.all('.modal-body tr td')[17].should(have.exact_text('123 Street, City, Country'))
+    browser.all('.modal-body tr td')[19].should(have.exact_text('NCR Delhi'))
