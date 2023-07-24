@@ -13,20 +13,18 @@ def test_fill_and_submit_form(setup_browser):
     browser.element('#firstName').type('John')
     browser.element('#lastName').type('Doe')
     browser.element('#userEmail').type('johndoe@example.com')
-    browser.element('label[for="gender-radio-1"]').click()
+    browser.element('//label[text()="Male"]').click()
     browser.element('#userNumber').type('1234567890')
 
     # Выбор даты рождения
     browser.element('#dateOfBirthInput').click()
-    browser.element('.react-datepicker__month-select').click()
-    browser.element('.react-datepicker__month-select').element('option[value="5"]').click()  # Июнь
-    browser.element('.react-datepicker__year-select').click()
-    browser.element('.react-datepicker__year-select').element('option[value="1990"]').click()
-    browser.element('.react-datepicker__day--015').click()  # Выбираем 15-е число
+    browser.element('.react-datepicker__month-select').send_keys('June')  # Июнь
+    browser.element('.react-datepicker__year-select').send_keys('1990')
+    browser.element(f'.react-datepicker__day--0{15}').click()  # Выбираем 15-е число
 
     # Выбор предметов
     browser.element('#subjectsInput').type('Maths').press_enter()
-    browser.element('label[for="hobbies-checkbox-1"]').click()
+    browser.element('//label[text()="Sports"]').click()
 
     # Загрузка файла
     browser.element('#uploadPicture').send_keys(os.path.abspath('picture/Streets.png'))
@@ -48,14 +46,17 @@ def test_fill_and_submit_form(setup_browser):
         have.exact_text('Thanks for submitting the form'))
 
     # Проверка успешной отправки формы
-    browser.element('.modal-title').should(have.exact_text('Thanks for submitting the form'))
-    browser.all('.modal-body tr td')[1].should(have.exact_text('John Doe'))
-    browser.all('.modal-body tr td')[3].should(have.exact_text('johndoe@example.com'))
-    browser.all('.modal-body tr td')[5].should(have.exact_text('Male'))
-    browser.all('.modal-body tr td')[7].should(have.exact_text('1234567890'))
-    browser.all('.modal-body tr td')[9].should(have.exact_text('15 June,1990'))
-    browser.all('.modal-body tr td')[11].should(have.exact_text('Maths'))
-    browser.all('.modal-body tr td')[13].should(have.exact_text('Sports'))
-    browser.all('.modal-body tr td')[15].should(have.exact_text('Streets.png'))
-    browser.all('.modal-body tr td')[17].should(have.exact_text('123 Street, City, Country'))
-    browser.all('.modal-body tr td')[19].should(have.exact_text('NCR Delhi'))
+    browser.element('.table').all('td:nth-of-type(2)').should(
+        have.texts(
+            'John Doe',
+            'johndoe@example.com',
+            'Male',
+            '1234567890',
+            '15 June,1990',
+            'Maths',
+            'Sports',
+            'Streets.png',
+            '123 Street, City, Country',
+            'NCR Delhi',
+        )
+    )
